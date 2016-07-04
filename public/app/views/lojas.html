@@ -1,0 +1,7 @@
+murilo
+<input type="text" ng-model="dados.nome">
+<input type="text" ng-model="dados.ramo">
+<input type="button" ng-click="novaLoja(dados)">
+<ul>
+	<li ng-repeat="loja in lojasBD" ng-click="openLoja(loja)">{{loja.dados.nome}}</li>
+</ul>
