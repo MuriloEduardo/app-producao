@@ -3,20 +3,28 @@ app.config(function ($routeProvider, $locationProvider) {
 	$routeProvider
 	.when('/', {
 		templateUrl: './views/lojas.html',
-		controller: 'lojasCtrl'
+		controller: 'lojasCtrl',
+        resolve: {
+            allPropriedades: function (Api){
+                return Api.AllPropriedades();
+            },
+            Usuario: function(Api){
+            	return Api.Usuario();
+            }
+        }
 	})
 
-	.when('/app/:loja', {
+	.when('/:loja', {
 		templateUrl: './views/loja.html',
-		controller: ['$routeParams', function($routeParams) {
-			var self=this;
-			self.loja = $routeParams.loja;
-			console.log(self)
-		}],
-		controllerAs: 'lojaCtrl'
+		controller: 'lojaCtrl',
+        resolve: {
+            dadosPropriedade: function (Api){
+                return Api.getAdministrando();
+            }
+        }
 	})
 
-	//.otherwise({redirectTo: '/'});
+	.otherwise({redirectTo: '/'});
 
-	$locationProvider.html5Mode({enabled: true, requireBase: false});
+	$locationProvider.html5Mode({enabled: true});
 });

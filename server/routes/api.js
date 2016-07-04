@@ -11,7 +11,7 @@ module.exports = function(router, passport){
 	// Não precisa estar logado
 	router.post('/cadastrar', passport.authenticate('local-signup', {
 		successRedirect: '/',
-		failureRedirect: '/api/cadastrar',
+		failureRedirect: '/',
 		failureFlash: true
 	}));
 
@@ -29,12 +29,17 @@ module.exports = function(router, passport){
 
 	router.post('/login', passport.authenticate('local-login', {
 		successRedirect: '/app',
-		failureRedirect: '/api/login',
+		failureRedirect: '/',
 		failureFlash: true
 	}));
 
 	router.get('/logado', isLoggedIn, function(req, res){
 		res.json(req.user);
+	});
+
+	router.get('/logout', function(req, res){
+		req.logout();
+		res.redirect('/');
 	});
 
 	///////////
@@ -92,6 +97,13 @@ module.exports = function(router, passport){
 	router.delete('/lojas/:id', isLoggedIn, function(req, res){
 		Lojas.remove({_id: req.params.id}, function(err){
 			res.json({result: err ? 'error' : 'ok'});
+		});
+	});
+
+	// LISTAR TODAS AS LOJAS  DO USUARIO LOGADO //
+	router.get('/lojas-logado', isLoggedIn, function(req, res){
+		Lojas.find({'dados.idCriador': req.user._id}, function(err, data){
+			res.json(data);
 		});
 	});
 

@@ -55,12 +55,12 @@ app.use('/', api);
 require('./server/routes/api')(api, passport);
 app.use('/api', api);
 
-// Handle 404
+// Erro 404
 app.use(function(req, res) {
 	res.send('404: Page not Found', 404);
 });
 
-// Handle 500
+// Erro 500
 app.use(function(error, req, res, next) {
 	res.send('500: Internal Server Error', 500);
 });
