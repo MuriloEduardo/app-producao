@@ -12,6 +12,7 @@ app.factory('Api', function($resource, $http){
 		}
 	}
 
+	// Pega todas as propriedades do usuario logado
 	var _getAllPropriedades = function() {
 		return $http.get('/api/lojas-logado');
 	}
@@ -24,6 +25,9 @@ app.factory('Api', function($resource, $http){
     // Ao usuario abrir esta propriedade popula uma variavel
     // Que poderá ser usada a qualquer momento
     var _setPropriedade = function(objPropriedade) {
+    	$http.get('/app/' + objPropriedade._id).success(function(data){
+    		console.log(data)
+    	});
     	propriedadeAdministrando = objPropriedade;
     };
 

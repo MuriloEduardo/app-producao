@@ -48,7 +48,7 @@ app.get('/', function(req, res){
 });
 
 // App
-require('./server/routes/app')(api);
+require('./server/routes/app')(api, io);
 app.use('/', api);
 
 // API
@@ -65,6 +65,6 @@ app.use(function(error, req, res, next) {
 	res.send('500: Internal Server Error', 500);
 });
 
-app.listen(port, function(){
+server.listen(port, function(){
 	console.log('Rodando em ' + port);
 });
