@@ -20,7 +20,7 @@ app.controller('lojasCtrl', function($scope, Api, $location, allPropriedades, Us
 
 		Api.Lojas.save({}, lojaManipulacao, function(data){
 			if(data){
-				console.log(data)
+				$scope.lojasBD.push(data);
 			}
 		});
 	}

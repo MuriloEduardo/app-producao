@@ -1,6 +1,26 @@
-<h1>{{dadosPropriedade.dados.nome}}</h1>
-<div class="jumbotrom">
-	{{dadosPropriedade}}
+<div class="container">
+	<div class="col-md-8 col-md-offset-2">
+		<div class="jumbotron">
+			<h1>{{dadosPropriedade.dados.nome}}</h1> 
+			<p ng-repeat="(key, value) in dadosPropriedade.dados">{{key}}: {{value}}</p> 
+		</div>
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Panel title</h3>
+			</div>
+			<div class="panel-body">Panel content</div>
+		</div>
+		
+		<br>
+
+		<div class="form-group">
+			<input type="email" class="form-control" placeholder="Email do novo adm" ng-model="dadosNewAdm.email">
+		</div>
+		<div class="form-group">
+			<a href="javascript:void(0)" ng-click="newAdm(dadosNewAdm)" class="form-control btn btn-success">Novo Adm</a>
+		</div>
+		<div class="form-group">
+			<a href="javascript:void(0)" class="form-control btn btn-warning" ng-click="voltar()">Voltar</a>
+		</div>
+	</div>
 </div>
-<br>
-<a href="javascript:void(0)" ng-click="voltar()">Voltar</a>

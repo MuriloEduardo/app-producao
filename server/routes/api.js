@@ -3,48 +3,85 @@ var Lojas = require('../models/loja');
 
 module.exports = function(router, passport){
 
-	//////////////
-	// USUARIO //
-	////////////
+	  ///////////////////////////////////////////////
+	 //                  USUARIOS                 //
+	///////////////////////////////////////////////
 
 	// CADASTRAR UM NOVO USUARIO
-	// Não precisa estar logado
 	router.post('/cadastrar', passport.authenticate('local-signup', {
 		successRedirect: '/',
 		failureRedirect: '/',
 		failureFlash: true
 	}));
 
-	router.post('/experimentar', function(req, res){
-		var novoUsuario = new Usuario();
-		novoUsuario.local.email = req.body.email;
-		novoUsuario.local.senha = req.body.senha;
-
-		novoUsuario.save(function(err){
-			if(err)
-				throw err;
-		});
-		res.send('success');
-	});
-
+	// EFETUA O LOGIN APARTIR DE EMAIL E SENHA //
 	router.post('/login', passport.authenticate('local-login', {
 		successRedirect: '/app',
 		failureRedirect: '/',
 		failureFlash: true
 	}));
 
+	// CRIAR NOVO ADMINISTRADOR //
+	router.post('/new-adm', isLoggedIn, function(req, res){
+		
+		var novoAdm         = new Usuario();
+		novoAdm.local.email = req.body.email;
+
+		novoAdm.save(function(err, data1){
+			if(err){
+				throw err;
+			}else{
+
+				Lojas.findOne({_id: req.body.id}, function(err, data2){
+					
+					var lojas = data2;
+					lojas.dados.administradores.push({idUsuario: data1._id});
+
+					lojas.save(function(err, data3){
+						if(err){
+							throw err;
+						}else{
+							res.json(data3);
+						}
+					});
+				});
+			}
+		});
+	});
+
+	// PEGA DADOS DO USUARIO CRIADO //
 	router.get('/logado', isLoggedIn, function(req, res){
 		res.json(req.user);
 	});
 
-	router.get('/logout', function(req, res){
+	// ENCERRA SESSÃO NODEJS //
+	router.get('/logout', isLoggedIn, function(req, res){
 		req.logout();
 		res.redirect('/');
 	});
 
-	///////////
-	// LOJA //
-	/////////
+	// PEGA DADOS DE UM UNICO USUARIO
+	router.get('/usuario/:id', isLoggedIn, function(req, res){
+		Usuario.findOne({_id: req.params.id}, function(err, data){
+			res.json(data);
+		});
+	});
+
+	router.post('/administradores', isLoggedIn, function(req, res){
+		
+		var dadosAdministradores = [];
+
+		for (var i=0; i<req.body.length; i++) {
+			Usuario.findOne({_id: req.body[i].idUsuario}, function(err, data){
+				dadosAdministradores.push(data);
+				return dadosAdministradores;
+			});
+		}
+	});
+
+	  ///////////////////////////////////////////////
+	 //                     LOJAS                 //
+	///////////////////////////////////////////////
 
 	// CRIAR UMA LOJA //
 	router.post('/lojas', isLoggedIn, function(req, res){
@@ -54,7 +91,6 @@ module.exports = function(router, passport){
 		novaLoja.dados.ramo        = req.body.dados.ramo;
 		novaLoja.dados.idCriador   = req.body.dados.idCriador;
 		novaLoja.dados.dtCadastro  = new Date();
-		novaLoja.dados.dtAlteracao = new Date();
 
 		novaLoja.save(function(err, data){
 			if(err){
@@ -74,7 +110,6 @@ module.exports = function(router, passport){
 			lojas.dados.ramo        = req.body.dados.ramo;
 			lojas.dados.idCriador   = req.body.dados.idCriador;
 			lojas.dados.dtCadastro  = new Date();
-			lojas.dados.dtAlteracao = new Date();
 
 			lojas.save(function(err, data){
 				if(err){

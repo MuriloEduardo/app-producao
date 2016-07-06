@@ -1,8 +1,17 @@
-<a href="/api/logout">Sair</a>
-<br>
-<input type="text" ng-model="dados.nome">
-<input type="text" ng-model="dados.ramo">
-<input type="button" ng-click="novaLoja(dados)" value="Cadastrar nova loja">
-<ul>
-	<li ng-repeat="loja in lojasBD" ng-click="openLoja(loja)">{{loja.dados.nome}}</li>
-</ul>
+<div class="container">
+	<div class="col-md-10 col-md-offset-1">
+		<div class="form-group">
+			<input class="form-control" type="text" ng-model="dados.nome" placeholder="Titulo da propriedade">
+		</div>
+		<div class="form-group">
+			<input class="form-control" type="text" ng-model="dados.ramo" placeholder="Ramo da propriedade">
+		</div>
+		<div class="form-group">
+			<input class="form-control btn btn-success" type="button" ng-click="novaLoja(dados)" value="Cadastrar nova loja">
+		</div>
+		<hr>
+		<div class="panel panel-default" ng-repeat="loja in lojasBD" ng-click="openLoja(loja)" style="cursor: pointer;">
+			<div class="panel-body">{{loja.dados.nome}}</div>
+		</div>
+	</div>
+</div>

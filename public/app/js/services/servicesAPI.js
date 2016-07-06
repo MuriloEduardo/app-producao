@@ -8,7 +8,10 @@ app.factory('Api', function($resource, $http){
 			dtCadastro: undefined,
 			idCriador: undefined,
 			nome: undefined,
-			ramo: undefined
+			ramo: undefined,
+			administradores: {
+				idUsuario: undefined
+			}
 		}
 	}
 
@@ -25,9 +28,6 @@ app.factory('Api', function($resource, $http){
     // Ao usuario abrir esta propriedade popula uma variavel
     // Que poderá ser usada a qualquer momento
     var _setPropriedade = function(objPropriedade) {
-    	$http.get('/app/' + objPropriedade._id).success(function(data){
-    		console.log(data)
-    	});
     	propriedadeAdministrando = objPropriedade;
     };
 
@@ -41,12 +41,40 @@ app.factory('Api', function($resource, $http){
     	delete propriedadeAdministrando;
     }
 
+    // Novo administrador
+    var _newAdm = function(dados) {
+    	return $http.post('/api/new-adm', dados);
+    }
+
+    // Dados dos administradores
+    var _dadosAdministradores = function() {
+    	$http.post('/api/administradores', propriedadeAdministrando.dados.administradores).success(function(data){
+    		console.log(data)
+    	});
+    }
+
 	return {
+		// Pega dados do usuario logado
 		Usuario: _getUsuario,
+
+		// Cria um novo administrador dentro de uma propriedade
+		newAdm: _newAdm,
+
+		// Lista todas propriedades do usuario logado
 		AllPropriedades: _getAllPropriedades,
+
+		// Responsavel por ações nas lojas
 		Lojas: $resource('/api/lojas/:id', {id: '@id'}),
+		
+		// Diz qual loja usuario logado deseja administrar
 		setAdministrando: _setPropriedade,
+
+		// Pega os dados da loja setada que o usuario logado desja administrar
 		getAdministrando: _getPropriedade,
+
+		// Volta para a listagem de todas as pastas
 		destroyAdministrando: _destroyPropriedade,
+
+		getDadosAdministradores: _dadosAdministradores
 	};
 });

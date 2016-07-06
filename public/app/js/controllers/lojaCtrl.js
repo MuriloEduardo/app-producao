@@ -1,4 +1,4 @@
-app.controller('lojaCtrl', function($scope, $rootScope, dadosPropriedade, Api, $location){
+app.controller('lojaCtrl', function($scope, $rootScope, dadosPropriedade, Api, $location, dadosAdministradores){
 
 	// Conecta-se com o namespace do _id da loja
 	var socket = io('/' + dadosPropriedade._id);
@@ -19,5 +19,17 @@ app.controller('lojaCtrl', function($scope, $rootScope, dadosPropriedade, Api, $
 	$scope.voltar = function() {
 		Api.destroyAdministrando();
 		$location.path('/');
+	}
+
+	$scope.newAdm = function(dados) {
+		
+		dados = {
+			id: dadosPropriedade._id,
+			email: dados.email
+		}
+
+		Api.newAdm(dados).success(function(data){
+    		console.log(data);
+    	});
 	}
 });

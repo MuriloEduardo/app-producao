@@ -5,10 +5,15 @@ var lojaSchema = mongoose.Schema({
 		nome: String,
 		ramo: String,
 		idCriador: String,
+		administradores: [
+			{
+				idUsuario: String,
+				permissoes: String
+			}
+		],
 		cpfCriador: String,
 		cnpj: String,
-		dtCadastro: String,
-		dtAlteracao: String
+		dtCadastro: String
 	}
 });
 
