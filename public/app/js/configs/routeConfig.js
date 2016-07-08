@@ -2,14 +2,11 @@ app.config(function ($routeProvider, $locationProvider) {
     
     $routeProvider
     .when('/', {
-        templateUrl: './views/lojas.html',
-        controller: 'lojasCtrl',
+        templateUrl: './views/propriedades.html',
+        controller: 'propriedadesCtrl',
         resolve: {
             allPropriedades: function (Api){
                 return Api.AllPropriedades();
-            },
-            Usuario: function(Api){
-                return Api.Usuario();
             }
         }
     })
@@ -20,9 +17,6 @@ app.config(function ($routeProvider, $locationProvider) {
         resolve: {
             dadosPropriedade: function (Api){
                 return Api.getAdministrando();
-            },
-            dadosAdministradores: function(Api){
-                return Api.getDadosAdministradores();
             }
         }
     })

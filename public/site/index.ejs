@@ -7,21 +7,14 @@
 </head>
 <body>
 <div class="container">
-
-	<div class="jumbotron text-center">
-		<h1><span class="fa fa-lock"></span> Node Authentication</h1>
-
-		<p>Login or Register with:</p>
-	</div>
-
 	<div class="row">
 		<div class="col-md-12">
 			<div class="col-md-6">
 				<h1><span class="fa fa-sign-in"></span> Login</h1>
 
 				<!-- show any messages that come back with authentication -->
-				<% if (message.length > 0) { %>
-				<div class="alert alert-danger"><%= message %></div>
+				<% if (message_login.length){ %>
+				<div class="alert alert-danger"><%= message_login %></div>
 				<% } %>
 
 				<!-- LOGIN FORM -->
@@ -42,8 +35,8 @@
 				<h1><span class="fa fa-sign-in"></span> Signup</h1>
 
 				<!-- show any messages that come back with authentication -->
-				<% if (message.length > 0) { %>
-				<div class="alert alert-danger"><%= message %></div>
+				<% if (message_cadastrar.length){ %>
+				<div class="alert alert-danger"><%= message_cadastrar %></div>
 				<% } %>
 
 				<!-- LOGIN FORM -->

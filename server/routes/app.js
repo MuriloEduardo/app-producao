@@ -8,6 +8,8 @@ module.exports = function(router, io){
 
 		var namespace = io.of('/' + req.params.loja);
 
+		console.log(req.params.loja)
+
 		namespace.on('connection', function (socket) {
 			// Transmitir a todos que usuario entrou na propriedade
 			socket.on('entrou loja', function (data) {

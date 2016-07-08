@@ -23,7 +23,7 @@ module.exports = function(passport){
 					if(err)	return done(err);
 
 					if(user){
-						return done(null, false, req.flash('signupMessage', 'That email already taken'));
+						return done(null, false, req.flash('cadastrarAviso', 'Email existente'));
 					}else{
 						var newUser = new Usuario();
 						newUser.local.email = email;
@@ -50,9 +50,9 @@ module.exports = function(passport){
 					if(err)
 						return done(err);
 					if(!user)
-						return done(null, false, req.flash('loginMessage', 'No User found'));
+						return done(null, false, req.flash('loginAviso', 'Usuário não encontrado'));
 					if(!user.validPassword(senha)){
-						return done(null, false, req.flash('loginMessage', 'inavalid password'));
+						return done(null, false, req.flash('loginAviso', 'Senha inválida'));
 					}
 					return done(null, user);
 

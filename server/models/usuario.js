@@ -2,10 +2,22 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 
 var usuarioSchema = mongoose.Schema({
+	nome: String,
+	foto_perfil: String,
+	data_nascimento: Date,
+	cpf: String,
+	pagamento: {
+		numero_cartao: Number,
+		data_validade: String,
+		codigo_seguranca: Number
+	},
 	local: {
 		email: String,
 		senha: String
-	}
+	},
+	data_cadastro: {type: Date, default: Date.now},
+	propriedades: [],
+	notificacoes: []
 });
 
 usuarioSchema.methods.generateHash = function(senha){

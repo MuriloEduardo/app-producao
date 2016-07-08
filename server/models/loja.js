@@ -4,17 +4,25 @@ var lojaSchema = mongoose.Schema({
 	dados: {
 		nome: String,
 		ramo: String,
-		idCriador: String,
-		administradores: [
-			{
-				idUsuario: String,
-				permissoes: String
-			}
-		],
-		cpfCriador: String,
+		termos: Boolean,
 		cnpj: String,
-		dtCadastro: String
-	}
+		telefone: String,
+		endereco: {
+			cep: Number,
+			logradouro: String,
+			numero: Number,
+			complemento: String,
+			bairro: String,
+			cidade: String,
+			estado: String
+		},
+		data_cadastro: {type: Date, default: Date.now}
+	},
+	frete: {
+		tipo_frete: String,
+		tipo_entrega: String
+	},
+	administradores: []
 });
 
 module.exports = mongoose.model('Loja', lojaSchema);

@@ -12,7 +12,7 @@ var flash = require('connect-flash');
 var path = require('path');
 var api = express.Router();
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3030;
 
 var configDB = require('./server/config/database');
 mongoose.connect(configDB.url, function(err, res) {
@@ -44,7 +44,7 @@ app.use(express.static(path.resolve(__dirname, 'public')));
 
 // Site
 app.get('/', function(req, res){
-	res.render('./index.ejs', { message: req.flash('loginMessage'), message: req.flash('signupMessage') });
+	res.render('./index.ejs', {message_login: req.flash('loginAviso'), message_cadastrar: req.flash('cadastrarAviso')});
 });
 
 // App

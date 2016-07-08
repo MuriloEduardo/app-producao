@@ -1,0 +1,26 @@
+<div class="container">
+	<div class="col-md-12">
+		<div class="col-md-6">
+			<div class="form-group">
+				<input class="form-control" type="text" ng-model="propriedade.dados.nome" placeholder="Titulo/Nome">
+			</div>
+			<div class="form-group">
+				<input class="form-control" type="text" ng-model="propriedade.dados.ramo" placeholder="Ramo">
+			</div>
+			<div class="form-group">
+				<input class="form-control" type="text" ng-model="propriedade.dados.cnpj" placeholder="Cnpj">
+			</div>
+			<div class="form-group">
+				<input class="form-control" type="text" ng-model="propriedade.dados.telefone" placeholder="Telefone">
+			</div>
+			<div class="form-group">
+				<input class="form-control btn btn-success" type="button" ng-click="novaLoja(propriedade)" value="Cadastrar nova loja">
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-default" ng-repeat="loja in lojasBD" ng-click="openLoja(loja)" style="cursor: pointer;">
+				<div class="panel-body">{{loja.dados.nome}}</div>
+			</div>
+		</div>
+	</div>
+</div>

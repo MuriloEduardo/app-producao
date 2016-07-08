@@ -1,5 +1,6 @@
 var Usuario = require('../models/usuario');
 var Lojas = require('../models/loja');
+var mongoose = require('mongoose');
 
 module.exports = function(router, passport){
 
@@ -9,7 +10,7 @@ module.exports = function(router, passport){
 
 	// CADASTRAR UM NOVO USUARIO
 	router.post('/cadastrar', passport.authenticate('local-signup', {
-		successRedirect: '/',
+		successRedirect: '/app',
 		failureRedirect: '/',
 		failureFlash: true
 	}));
@@ -71,7 +72,7 @@ module.exports = function(router, passport){
 		
 		var dadosAdministradores = [];
 
-		for (var i=0; i<req.body.length; i++) {
+		for (var i=0;i<req.body.length;i++) {
 			Usuario.findOne({_id: req.body[i].idUsuario}, function(err, data){
 				dadosAdministradores.push(data);
 				return dadosAdministradores;
@@ -86,17 +87,25 @@ module.exports = function(router, passport){
 	// CRIAR UMA LOJA //
 	router.post('/lojas', isLoggedIn, function(req, res){
 		
-		var novaLoja               = new Lojas();
-		novaLoja.dados.nome 	   = req.body.dados.nome;
-		novaLoja.dados.ramo        = req.body.dados.ramo;
-		novaLoja.dados.idCriador   = req.body.dados.idCriador;
-		novaLoja.dados.dtCadastro  = new Date();
+		var novaLoja   = new Lojas();
+		novaLoja.dados = req.body.dados;
+		novaLoja.administradores.push(req.user._id);
 
 		novaLoja.save(function(err, data){
 			if(err){
 				throw err;
 			}else{
-				res.json(data);
+
+				var propriedadeUsuario = req.user;
+				propriedadeUsuario.propriedades.push(data._id);
+
+				propriedadeUsuario.save(function(err){
+					if(err){
+						throw err;
+					}else{
+						res.json(data);
+					}
+				});
 			}
 		});
 	});
@@ -135,9 +144,9 @@ module.exports = function(router, passport){
 		});
 	});
 
-	// LISTAR TODAS AS LOJAS  DO USUARIO LOGADO //
-	router.get('/lojas-logado', isLoggedIn, function(req, res){
-		Lojas.find({'dados.idCriador': req.user._id}, function(err, data){
+	// LISTAR TODAS AS LOJAS DO USUARIO LOGADO //
+	router.get('/propriedades', isLoggedIn, function(req, res){
+		Lojas.find({_id: { $in: req.user.propriedades.map(function(o){ return mongoose.Types.ObjectId(o); })}}, function(err, data){
 			res.json(data);
 		});
 	});
