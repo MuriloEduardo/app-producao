@@ -1,4 +1,4 @@
-app.controller('lojaCtrl', function($scope, $rootScope, dadosPropriedade, Api, $location){
+app.controller('lojaCtrl', function($scope, $rootScope, dadosPropriedade, Api, $location, $http){
 
 	// Conecta-se com o namespace do _id da loja
 	var socket = io('/' + dadosPropriedade._id);
@@ -22,14 +22,13 @@ app.controller('lojaCtrl', function($scope, $rootScope, dadosPropriedade, Api, $
 	}
 
 	$scope.newAdm = function(dados) {
-		
-		dados = {
-			id: dadosPropriedade._id,
-			email: dados.email
-		}
-
-		Api.newAdm(dados).success(function(data){
-    		console.log(data);
-    	});
+		dados.propriedade = dadosPropriedade._id;
+    	$http.post('/api/new-adm', dados).success(function (data, status, headers, config) {
+    		if(data.err){
+    			// Email ja existe
+    		}else{
+    			// Criado
+    		}
+        });
 	}
 });

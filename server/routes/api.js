@@ -25,27 +25,32 @@ module.exports = function(router, passport){
 	// CRIAR NOVO ADMINISTRADOR //
 	router.post('/new-adm', isLoggedIn, function(req, res){
 		
-		var novoAdm         = new Usuario();
-		novoAdm.local.email = req.body.email;
+		Usuario.findOne({'local.email': req.body.local.email}, function(err, user){
+			if(!user){
+				var novoAdm = new Usuario();
+				novoAdm.local = req.body.local;
+				novoAdm.propriedades.push(req.body.propriedade);
 
-		novoAdm.save(function(err, data1){
-			if(err){
-				throw err;
-			}else{
+				novoAdm.save(function(err, data1){
+					if(err){
+						throw err;
+					}else{
+						Lojas.findOne({_id: req.body.propriedade}, function(err, data2){
+							var loja = data2;
+							loja.administradores.push(data1._id);
 
-				Lojas.findOne({_id: req.body.id}, function(err, data2){
-					
-					var lojas = data2;
-					lojas.dados.administradores.push({idUsuario: data1._id});
-
-					lojas.save(function(err, data3){
-						if(err){
-							throw err;
-						}else{
-							res.json(data3);
-						}
-					});
+							loja.save(function(err, data3){
+								if(err){
+									throw err;
+								}else{
+									res.json(data3);
+								}
+							});
+						});
+					}
 				});
+			}else{
+				res.json({err: 1});
 			}
 		});
 	});
